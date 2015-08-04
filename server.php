@@ -19,14 +19,14 @@ try {
         echo "Ok<br>";
     }
     echo "Listen socket....";
-    if(!socket_listen($socket_desc)){//Прослущиваем соединение на сокете
+    if(!socket_listen($socket_desc)){//Прослушиваем соединение на сокете
         throw new Exception('Ошибка послушки сокета'.socket_strerror(socket_last_error()));
     }else{
         echo "Ok<br>";
     }
     echo "Accept socket....";
     do{
-        $accept_socket = socket_accept($socket_desc);//Принимаем соединение на сокете.Если нету ожидающих соединений, то функция socket_accept() будет блокировать выполнение скрипта до тех пор, пока не появится соединение.
+        $accept_socket = socket_accept($socket_desc);//Принимаем соединение на сокете.
         if(!$accept_socket){
             throw new Exception('Невозможно принять соединение'.socket_strerror(socket_last_error()));
         }else{
