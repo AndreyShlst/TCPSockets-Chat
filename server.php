@@ -1,7 +1,9 @@
 <?php
-$address = "127.0.0.1";
-$port = 7000;
                                                     /*Сервер*/
+set_time_limit(0);
+$address = "127.0.0.1";
+$port = 1000;
+
 try {
     echo 'Create socket ... ';
     $socket_desc = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);//Создаем сокет.Получаем дескриптор для соединения.
@@ -23,14 +25,18 @@ try {
         echo "Ok<br>";
     }
     echo "Accept socket....";
-    $accept_socket = socket_accept($socket_desc);//Принимаем соединение на сокете.Если нету ожидающих соединений, то функция socket_accept() будет блокировать выполнение скрипта до тех пор, пока не появится соединение.
-    if(!$accept_socket){
-        throw new Exception('Невозможно принять соединение'.socket_strerror(socket_last_error()));
-    }else{
-        echo "Wait<br>";
-    }
-    $msg = "Hello world\n";
-    socket_write($accept_socket, $msg);
+    do{
+        $accept_socket = socket_accept($socket_desc);//Принимаем соединение на сокете.Если нету ожидающих соединений, то функция socket_accept() будет блокировать выполнение скрипта до тех пор, пока не появится соединение.
+        if(!$accept_socket){
+            throw new Exception('Невозможно принять соединение'.socket_strerror(socket_last_error()));
+        }else{
+            echo "Wait<br>";
+        }
+        $id = uniqid('user_');
+        $msg = "Привет $id\n";
+        socket_write($accept_socket, $msg);
+    }while(true);
+    //socket_close($socket_desc);//Закрываем сокет
 }catch(Exception $e){
     echo $e->getMessage();
 }
